@@ -1,19 +1,60 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app" class="font-sans">
+    <h3 class="font-semibold text-gray-600">Vote Count App</h3>
+
+    <div v-for="(candidate, index) in candidates" :key="index">
+      <nominee-card
+        :nominee="candidate.name"
+        :srcImage="candidate.picture"
+        :officeStatus="candidate.status"
+        :voteCount="candidate.count"
+        @voteNow ="addVote($event, index)"
+      ></nominee-card>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import NomineeCard from "./components/NomineeCard.vue";
 
 export default {
-  name: 'App',
+  name: "App",
+  data() {
+    return {
+      candidates: [
+        {
+          picture: "gettyimages-509590596-web-1567541434.jpg",
+          name: "Jane Done",
+          status: "Incumbent Senator",
+          count: 16,
+        },
+        {
+          picture: "gettyimages-985138634-612x612.jpg",
+          name: "John Done",
+          status: "Challenger",
+          count: 300,
+        },
+        {
+          picture: "GettyImages-1092658864_hero-1024x575.jpg",
+          name: "Joe Bloggs",
+          status: "Challenger",
+          count: 100,
+        },
+      ],
+    };
+  },
+
   components: {
-    HelloWorld
+    NomineeCard,
+  },
+  methods: {
+    // $event data received from Nominee component
+    addVote($event, index) {
+      this.candidates[index].count = $event + 1
+      console.log(this.candidates[index].name + "count is" + this.candidates[index].count)
+    }
   }
-}
+};
 </script>
 
 <style>
